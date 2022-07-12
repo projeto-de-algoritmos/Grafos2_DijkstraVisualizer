@@ -1,4 +1,5 @@
 export function dijkstra(grid, startNode, finishNode) {
+  // Utilizamos um array por vermos que nesse contexto não tinha um ganho performático tão significativo usando heap
   const visitedNodesInOrder = [];
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
@@ -13,11 +14,11 @@ export function dijkstra(grid, startNode, finishNode) {
     updateUnvisitedNeighbors(closestNode, grid);
   }
 }
-
+// Verificamos a distancia de um nó para o outro e o ordenamos
 function sortNodesByDistance(unvisitedNodes) {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 }
-
+// Atualizamos os nós não visitados 
 function updateUnvisitedNeighbors(node, grid) {
   const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
   for (const neighbor of unvisitedNeighbors) {
@@ -25,7 +26,7 @@ function updateUnvisitedNeighbors(node, grid) {
     neighbor.previousNode = node;
   }
 }
-
+// Verificamos o nó e uma posição para cima,baixo,direita e esquerda
 function getUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   const { col, row } = node;
@@ -35,7 +36,7 @@ function getUnvisitedNeighbors(node, grid) {
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
   return neighbors.filter(neighbor => !neighbor.isVisited);
 }
-
+// Pegamos todos os nós do grid
 function getAllNodes(grid) {
   const nodes = [];
   for (const row of grid) {
@@ -46,8 +47,7 @@ function getAllNodes(grid) {
   return nodes;
 }
 
-// Backtracks from the finishNode to find the shortest path.
-// Only works when called *after* the dijkstra method above.
+// Pegamos o nó final e vemos o caminho mais rápido.
 export function getNodesInShortestPathOrder(finishNode) {
   const nodesInShortestPathOrder = [];
   let currentNode = finishNode;
